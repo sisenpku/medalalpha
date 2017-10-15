@@ -193,12 +193,9 @@ class getFund():
         @params : fundMode 1 stockFund 2 mixFund
         """
         if fundMode is 1:
-            #fundFile = './funddata/stockFundCode'
             fundCode = os.listdir('fundvalue/stock/')
         elif fundMode is 2: 
-            #fundFile = './funddata/mixFundCode'
             fundCode = os.listdir('fundvalue/mix/')
-        #fundCode = open(fundFile).readlines()
         rank = 1
         resDict = {}
         for code in fundCode:

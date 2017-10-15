@@ -15,7 +15,7 @@ class fundSort:
         """
         self.stockFile = './fundvalue/stock/'
         self.mixFile = './fundvalue/mix/'
-        self.saveFile = './funddata/'
+        self.saveFile = './sortedfund/'
         
     def getAllFile(self, fundMode):
         """
@@ -62,28 +62,16 @@ class fundSort:
             retDict[iter] = tmpDict
         return retDict
 
-    def sortFund(self, fundMode, parseYear, quarter, sortMode=1):
+    def sortFund(self, parseYear, endDate, span, sortRange=50, fundMode=3):
         """
         @summary : 对所有的基金净值情况进行排序
         @params : fundMode 1 股票型 2 混合型 3 全部
         @params : startDate
-        @params : sortMode  1 为季度，2为月度，其实为每个季度最后一个月
+        @params: span 排序的时间跨度
+        @params: sortRange 取前多少位的基金
         """
-        if sortMode is 1:
-            quarterStartDict = {1:"-01-01", 2:"-04-01", 3:"-07-01", 4: "-10-01"}
-            quarterEndDict = {1:"-03-31", 2:"-06-30", 3:"-09-30", 4: "-12-31"}
-            startDate = str(parseYear) + quarterStartDict[quarter]
-            endDate = str(parseYear) + quarterEndDict[quarter]
-        elif sortMode is 2:
-            quarterStartDict = {1:"-03-01", 2:"-06-01", 3:"-09-01", 4: "-12-01"}
-            quarterEndDict = {1:"-03-31", 2:"-06-30", 3:"-09-30", 4: "-12-31"}
-            startDate = str(parseYear) + quarterStartDict[quarter]
-            endDate = str(parseYear) + quarterEndDict[quarter]
-        startDateList = startDate.split("-")
-        if sortMode is 1:
-            postName = "." + startDateList[0] + "." + "q" + str(quarter)
-        elif sortMode is 2:
-            postName = "." + startDateList[0] + "." + "m" + str(quarter)
+        endDate = str(parseYear) + '-' + endDate
+        saveDate = "".join(endDate.split("-"))
         if fundMode is 1 or fundMode is 2:
             dataDict = self.loadDataSet(fundMode)
         elif fundMode is 3:
@@ -91,11 +79,10 @@ class fundSort:
             mixDict = self.loadDataSet(2)
             dataDict = dict(stockDict.items() + mixDict.items()) 
 
-        startArr = time.strptime(startDate, "%Y-%m-%d")
-        startTimeStamp = int(time.mktime(startArr))
-
         endArr = time.strptime(endDate, "%Y-%m-%d")
         endTimeStamp = int(time.mktime(endArr))
+
+        startTimeStamp = endTimeStamp - 3600 * 24 * span
         
         timeStampList = dataDict.values()[0].keys()
         while startTimeStamp not in timeStampList:
@@ -114,21 +101,21 @@ class fundSort:
                 continue
         retList= sorted(roseDict.items(), lambda x, y: cmp(x[1], y[1]), reverse=True) 
         positiveList = [[x[0], x[1]] for x in retList if float(x[1]) > 0]
-        topList = retList[:50]
+        topList = retList[:sortRange]
         topCode = [x[0] + "\t" + str(x[1]) for x in topList]
         retStr = '\n'.join(topCode)
         if fundMode is 1:
-            saveName = 'topstock'
+            saveName = 'topstock.'
         elif fundMode is 2:
-            saveName = 'topmix'
+            saveName = 'topmix.'
         elif fundMode is 3:
-            saveName = 'topall'
-        saveName += postName
+            saveName = 'topall.'
+        saveName += saveDate + '.' + str(span) + '.' + str(sortRange)
         savePath = self.saveFile + saveName
         saveFile = open(savePath, 'w')
         saveFile.write(retStr)
-        return retList
+        return topList
 
 if __name__ == "__main__":
     a = fundSort()
-    a.sortFund(3, 2017, 1, 2)
+    a.sortFund(2017, "10-13",1, 2)
