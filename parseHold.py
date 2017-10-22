@@ -205,7 +205,9 @@ class parseFundHold:
             quarter = 4
         else:
             quarter -= 1
+        print endPath
         startPath = "./stock/allstock/allstock." + str(startYear) + '.q' + str(quarter) 
+        print startPath
 
         startFile = open(startPath).readlines()
         endFile = open(endPath).readlines()
@@ -282,7 +284,7 @@ class parseFundHold:
             sortedFile = "./sortedfund/" + saveName + saveFile + '.' + str(span)  + '.' + str(sortRange)
             sortedFund = open(sortedFile).readlines()
             sortedFundList = [(x.strip().split("\t")[0], x.strip().split("\t")[1]) for x in sortedFund]
-        except:
+        except Exception, e:
             sortedFund = fundSort.fundSort()
             sortedFundList = sortedFund.sortFund(parseYear, endDate, span, sortRange, fundMode)
 
@@ -332,6 +334,7 @@ class parseFundHold:
         endDate = "".join(endDate.split("-"))
         saveStr =  "./stock/topdiff/topdiff." + str(parseYear) + str(endDate) + '.' + str(span) + '.' + str(sortRange)
         open(saveStr, "w").write(resStr)
+        return topDiffList
 
     def getQuarter(self, parseYear, endDate):
         """
@@ -370,4 +373,5 @@ class parseFundHold:
 
 if __name__ == "__main__":
     a = parseFundHold()
-    a.parseTopDiff(2017, "01-20", 30, 60)
+    #a.parseTopDiff(2016, "01-20", 30, 60)
+    b = a.parseAllDiff(2016, 2)

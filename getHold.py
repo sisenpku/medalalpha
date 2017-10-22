@@ -219,6 +219,6 @@ class getFund():
         return
 
 if __name__ == "__main__":
-    a = getFund(detailStartYear='2017')
-    a.getAllFundHold(3,1)
-    a.getAllFundHold(3,2)
+    a = getFund(detailStartYear='2016')
+    a.getAllFundHold(1,1)
+    a.getAllFundHold(1,2)

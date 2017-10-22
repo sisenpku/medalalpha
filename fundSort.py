@@ -79,6 +79,8 @@ class fundSort:
             mixDict = self.loadDataSet(2)
             dataDict = dict(stockDict.items() + mixDict.items()) 
 
+        #endDate = endDate.split("-")
+        #endDate = endDate[0] + '-' + endDate[1] + "-01";
         endArr = time.strptime(endDate, "%Y-%m-%d")
         endTimeStamp = int(time.mktime(endArr))
 

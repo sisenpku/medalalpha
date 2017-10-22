@@ -16,7 +16,7 @@ class getFundValue:
         """
         @summary : 初始化函数 设定per为300
         """
-        self.baseUrl = 'http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&per=400&sdate=&edate=&rt=0.01649088312777347&page=1&code='
+        self.baseUrl = 'http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&per=500&sdate=&edate=&rt=0.01649088312777347&page=1&code='
         self.stockFile = stockFundFile
         self.mixFile = mixFundFile
         self.succStock = './fundvalue/stock/'
@@ -35,14 +35,7 @@ class getFundValue:
         else:
             fundFile = self.mixFile
             filePath = self.succMix
-        succFundList = os.listdir(filePath)
-        fundFile = open(fundFile)
-        fundContents = fundFile.readlines()
-        fundList = []
-        for iter in fundContents:
-            if iter.strip("\n") in succFundList:
-                continue
-            fundList.append(iter.strip("\n"))
+        fundList = os.listdir(filePath)
         return fundList
 
     def getValue(self, fundMode):
@@ -55,6 +48,7 @@ class getFundValue:
             baseSavePath += 'stock/'
         else:
             baseSavePath += 'mix/'
+        succCount = 0
         for iter in fundList:
             try:
                 url = self.baseUrl + iter
@@ -70,13 +64,13 @@ class getFundValue:
                         continue
                     valueDetail = item.select('td')
                     valueDate = valueDetail[0].text
-                    value = valueDetail[2].text
+                    value = valueDetail[1].text
                     valueStr += valueDate + "\t" + value + "\n"
                 saveFilePath = baseSavePath + iter
                 saveFile = open(saveFilePath, "w")
                 saveFile.write(valueStr)
-                time.sleep(4)
-                print "get fund " + iter + " succ"
+                succCount += 1
+                print "get fund " + iter + str(succCount) 
             except:
                 time.sleep(4)
                 pass
@@ -155,4 +149,6 @@ class getFundValue:
                 
 if __name__ == '__main__':
     b = getFundValue()
-    b.updateFundValue()
+    #b.updateFundValue()
+    a = b.getValue(1)
+    a = b.getValue(2)
