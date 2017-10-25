@@ -215,6 +215,7 @@ class getFund():
                     pass
         rank = 1
         resDict = {}
+        newCount = 1
         for code in fundCode:
             fundCode = code.strip() 
             url = self.baseUrl + str(fundCode) + self.postUrl
@@ -223,10 +224,9 @@ class getFund():
                     holdRes = savedDict[code]
                 elif code not in savedCode:
                     holdRes = list(self.getFundHoldDetail(url, fundCode, quarter))            
-                    print holdRes
+                    newCount += 1
             except:
                 holdRes = [fundCode, None]
-                print holdRes
             resDict[rank] = holdRes
             rank += 1
         saveName = './data/allfundhold/' 
@@ -237,6 +237,7 @@ class getFund():
         resStr = json.dumps(resDict)
         saveFile = open(saveName, "w")
         saveFile.write(resStr)
+        print newCount
         return
 
 if __name__ == "__main__":
