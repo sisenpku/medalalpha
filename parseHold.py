@@ -9,8 +9,8 @@ class parseFundHold:
     @summary : 根据得到的基金持仓情况，获得股票详情
     """
     def __init__(self):
-        self.holdPath = './fundhold/'
-        self.savePath = './result/'
+        self.holdPath = './data/fundhold/'
+        self.savePath = './data/result/'
 
 
     def parseStock(self, startYear, endDate, span, sortRange=50,fundMode=3):
@@ -40,7 +40,7 @@ class parseFundHold:
         try:
             endTime = str(startYear) + '-' + endDate
             saveFile = ''.join(endTime.split('-'))
-            sortedFile = "./sortedfund/" + modeStr + '.' + saveFile + '.' + str(span) + "." + str(sortRange)
+            sortedFile = "./data/sortedfund/" + modeStr + '.' + saveFile + '.' + str(span) + "." + str(sortRange)
             sortedFund= open(sortedFile).readlines()
             sortedFundList = [(x.strip().split("\t")[0], x.strip().split("\t")[1]) for x in sortedFund]
         except:
@@ -49,8 +49,8 @@ class parseFundHold:
 
         fundCode = [x[0] for x in sortedFundList]
         
-        mixFundStr = './allfundhold/' + 'mixall.'  + str(parseYear) + '.q' + str(quarter) 
-        stockFundStr = './allfundhold/' + 'stockall.'  + str(parseYear) + '.q' + str(quarter) 
+        mixFundStr = './data/allfundhold/' + 'mixall.'  + str(parseYear) + '.q' + str(quarter) 
+        stockFundStr = './data/allfundhold/' + 'stockall.'  + str(parseYear) + '.q' + str(quarter) 
         mixFund = open(mixFundStr).readlines()[0]
         mixFund = json.loads(mixFund)
         stockFund = open(stockFundStr).readlines()[0]
@@ -107,9 +107,9 @@ class parseFundHold:
         amountStr = "\n".join(sortedAmountList)
         
         dateStr = ''.join(endDate.split("-"))
-        freqSaveName = "./stock/top/" + modeStr + "." + "freq." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
-        shareSaveName = "./stock/top/" + modeStr + '.' + "share." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
-        amountSaveName = "./stock/top/" + modeStr + "." + "amount." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
+        freqSaveName = "./data/stock/top/" + modeStr + "." + "freq." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
+        shareSaveName = "./data/stock/top/" + modeStr + '.' + "share." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
+        amountSaveName = "./data/stock/top/" + modeStr + "." + "amount." + str(startYear) + dateStr + "." + str(span) + "." + str(sortRange)
         freqFile = open(freqSaveName, "w")
         shareFile = open(shareSaveName, "w")
         amountFile = open(amountSaveName, "w")
@@ -129,7 +129,7 @@ class parseFundHold:
         elif timeMode is 2:
             timeStr = ".m"
 
-        endFile = "./stock/allamount." + str(startYear) + timeStr + str(quarter)  
+        endFile = "./data/stock/allamount." + str(startYear) + timeStr + str(quarter)  
 
         if quarter is 1:
             startYear -= 1
@@ -137,7 +137,7 @@ class parseFundHold:
         else:
             quarter -= 1
         
-        startFile = "./stock/allamount." + str(startYear) + timeStr + str(quarter)  
+        startFile = "./data/stock/allamount." + str(startYear) + timeStr + str(quarter)  
         
         endFile = open(endFile).readlines()
         startFile = open(startFile).readlines()
@@ -154,8 +154,8 @@ class parseFundHold:
         @params : year 分析持仓的月份
         @params : quarter 季度
         """
-        mixFund = './allfundhold/mixall.' + str(year) + ".q" + str(quarter)
-        stockFund = './allfundhold/stockall.' + str(year) + ".q" + str(quarter)
+        mixFund = './data/allfundhold/mixall.' + str(year) + ".q" + str(quarter)
+        stockFund = './data/allfundhold/stockall.' + str(year) + ".q" + str(quarter)
         mixFund = open(mixFund).readlines()[0]
         stockFund = open(stockFund).readlines()[0]
         mixFund = json.loads(mixFund)
@@ -188,7 +188,7 @@ class parseFundHold:
         sortedHold = sorted(stockDict.items(), lambda x, y: cmp(x[1], y[1]), reverse=True) 
         sortedList = [x[0] + "\t" + str(x[1]) for x in sortedHold]
         resStr = "\n".join(sortedList)
-        saveName = "./stock/allstock/allstock." + str(year) + ".q" + str(quarter) 
+        saveName = "./data/stock/allstock/allstock." + str(year) + ".q" + str(quarter) 
         saveFile = open(saveName, "w")
         saveFile.write(resStr)
         return
@@ -197,16 +197,16 @@ class parseFundHold:
         """
         @summary : 对持仓变动情况进行分析
         """
-        endPath = "./stock/allstock/allstock." + str(startYear) + '.q' + str(quarter) 
-        savePath = "./stock/alldiff/alldiff." + str(startYear) + '.q' + str(quarter)
-        ratioSavePath = "./stock/alldiff/alldiffratio." + str(startYear) + '.q' + str(quarter)
+        endPath = "./data/stock/allstock/allstock." + str(startYear) + '.q' + str(quarter) 
+        savePath = "./data/stock/alldiff/alldiff." + str(startYear) + '.q' + str(quarter)
+        ratioSavePath = "./data/stock/alldiff/alldiffratio." + str(startYear) + '.q' + str(quarter)
         if quarter is 1:
             startYear -= 1
             quarter = 4
         else:
             quarter -= 1
         print endPath
-        startPath = "./stock/allstock/allstock." + str(startYear) + '.q' + str(quarter) 
+        startPath = "./data/stock/allstock/allstock." + str(startYear) + '.q' + str(quarter) 
         print startPath
 
         startFile = open(startPath).readlines()
@@ -281,7 +281,7 @@ class parseFundHold:
         try:
             endTime = str(parseYear) + '-' + endDate
             saveFile = ''.join(endTime.split('-'))
-            sortedFile = "./sortedfund/" + saveName + saveFile + '.' + str(span)  + '.' + str(sortRange)
+            sortedFile = "./data/sortedfund/" + saveName + saveFile + '.' + str(span)  + '.' + str(sortRange)
             sortedFund = open(sortedFile).readlines()
             sortedFundList = [(x.strip().split("\t")[0], x.strip().split("\t")[1]) for x in sortedFund]
         except Exception, e:
@@ -302,7 +302,7 @@ class parseFundHold:
         elif fundMode is 3:
             modeStr = "topall"
         try:
-            endFile= "./stock/top/" + modeStr + "." + "amount." + str(parseYear) + "." + str(span) + "." + str(sortRange)
+            endFile= "./data/stock/top/" + modeStr + "." + "amount." + str(parseYear) + "." + str(span) + "." + str(sortRange)
             endFile = open(endFile).readlines()
         except:
             endFile = self.parseStock(parseYear, endDate, span, sortRange,fundMode)
@@ -314,7 +314,7 @@ class parseFundHold:
             topHoldList.append([iter[0], float(iter[1])])
         
         try:
-            diffFile = "./stock/alldiff/alldiff." + str(year) + ".q" + str(quarter) 
+            diffFile = "./data/stock/alldiff/alldiff." + str(year) + ".q" + str(quarter) 
             diffFile = open(diffFile).readlines()
         except:
             diffFile = self.parseAllDiff(year, quarter) 
@@ -332,7 +332,7 @@ class parseFundHold:
                 continue
         resStr = "\n".join(topDiffList)
         endDate = "".join(endDate.split("-"))
-        saveStr =  "./stock/topdiff/topdiff." + str(parseYear) + str(endDate) + '.' + str(span) + '.' + str(sortRange)
+        saveStr =  "./data/stock/topdiff/topdiff." + str(parseYear) + str(endDate) + '.' + str(span) + '.' + str(sortRange)
         open(saveStr, "w").write(resStr)
         return topDiffList
 
