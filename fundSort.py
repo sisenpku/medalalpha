@@ -13,9 +13,9 @@ class fundSort:
         """
         @summary : 初始化函数
         """
-        self.stockFile = './fundvalue/stock/'
-        self.mixFile = './fundvalue/mix/'
-        self.saveFile = './sortedfund/'
+        self.stockFile = './data/fundvalue/stock/'
+        self.mixFile = './data/fundvalue/mix/'
+        self.saveFile = './data/sortedfund/'
         
     def getAllFile(self, fundMode):
         """

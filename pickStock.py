@@ -9,7 +9,7 @@ class pickStock:
     @summary : 根据得到的基金持仓情况，获得股票详情
     """
     def __init__(self):
-        self.result = './result/'
+        self.result = './data/result/'
 
     def pickStockByDiff(self, parseYear, endDate, span, sortRange=50, 
                 fundMode=3):
@@ -37,7 +37,7 @@ class pickStock:
         amountList= sorted(diffList, lambda x, y: cmp(x[1], y[1]), reverse=True) 
         ratioList= sorted(diffList, lambda x, y: cmp(x[3], y[3]), reverse=True) 
         amountStr = []
-        freqFile = "./stock/top/" + "topall.freq." + endDate + '.' + str(span) + '.' + str(sortRange)
+        freqFile = "./data/stock/top/" + "topall.freq." + endDate + '.' + str(span) + '.' + str(sortRange)
         freqFile = open(freqFile).readlines()
         freqDict = {}
         for iter in freqFile:
@@ -71,7 +71,7 @@ class pickStock:
         jsonStr = json.dumps(amountJsonList)
         open(saveFile, "w").write(jsonStr)
 
-        sortedFile = "./sortedfund/"
+        sortedFile = "./data/sortedfund/"
         if fundMode is 1:
             saveName = 'topstock.'
         elif fundMode is 2:
@@ -98,4 +98,4 @@ class pickStock:
         
 if __name__ == "__main__":
     a = pickStock()
-    a.pickStockByDiff(2017, "04-20", 45, 50)
+    a.pickStockByDiff(2016, "04-25", 45, 500)

@@ -154,14 +154,14 @@ class getFund():
         elif timeMode is 2:
             timeStr = ".m"
         if fundMode is 1:
-            topFilePath = "./funddata/topstock." + self.detailYear + timeStr + str(quarter)
-            saveName = "./fundhold/stockhold." + self.detailYear + timeStr + str(quarter) 
+            topFilePath = "./data/funddata/topstock." + self.detailYear + timeStr + str(quarter)
+            saveName = "./data/fundhold/stockhold." + self.detailYear + timeStr + str(quarter) 
         elif fundMode is 2:
-            topFilePath = "./funddata/topmix." + self.detailYear + timeStr + str(quarter)
-            saveName = "./fundhold/mixhold." + self.detailYear + timeStr + str(quarter) 
+            topFilePath = "./data/funddata/topmix." + self.detailYear + timeStr + str(quarter)
+            saveName = "./data/fundhold/mixhold." + self.detailYear + timeStr + str(quarter) 
         elif fundMode is 3:
-            topFilePath = "./funddata/topall." + self.detailYear + timeStr + str(quarter)
-            saveName = "./fundhold/allhold." + self.detailYear + timeStr + str(quarter) 
+            topFilePath = "./data/funddata/topall." + self.detailYear + timeStr + str(quarter)
+            saveName = "./data/fundhold/allhold." + self.detailYear + timeStr + str(quarter) 
         topFile = open(topFilePath)
         topCodeList = topFile.readlines()
         rank = 0
@@ -193,22 +193,43 @@ class getFund():
         @params : fundMode 1 stockFund 2 mixFund
         """
         if fundMode is 1:
-            fundCode = os.listdir('fundvalue/stock/')
+            fundCode = os.listdir('./data/fundvalue/stock/')
         elif fundMode is 2: 
-            fundCode = os.listdir('fundvalue/mix/')
+            fundCode = os.listdir('./data/fundvalue/mix/')
+        saveName = './data/allfundhold/' 
+        if fundMode is 1:
+            saveName += 'stockall.' + str(self.detailYear) + '.q' + str(quarter)
+        elif fundMode is 2:
+            saveName += 'mixall.' + str(self.detailYear) + '.q' + str(quarter)
+        savedFile = open(saveName).readlines()[0]
+        savedFile = json.loads(savedFile)
+        savedCode = []
+        savedDict = {}
+        for iter in savedFile:
+            savedDetail = savedFile[iter]
+            if len(savedDetail) >= 3:
+                try:
+                    savedCode.append(savedDetail[0][0].encode("utf-8"))
+                    savedDict[savedDetail[0][0].encode("utf-8")] = savedDetail
+                except:
+                    pass
         rank = 1
         resDict = {}
         for code in fundCode:
             fundCode = code.strip() 
             url = self.baseUrl + str(fundCode) + self.postUrl
             try:
-                holdRes = list(self.getFundHoldDetail(url, fundCode, quarter))            
+                if code in savedCode:
+                    holdRes = savedDict[code]
+                elif code not in savedCode:
+                    holdRes = list(self.getFundHoldDetail(url, fundCode, quarter))            
+                    print holdRes
             except:
                 holdRes = [fundCode, None]
-            print holdRes
+                print holdRes
             resDict[rank] = holdRes
             rank += 1
-        saveName = './allfundhold/' 
+        saveName = './data/allfundhold/' 
         if fundMode is 1:
             saveName += 'stockall.' + str(self.detailYear) + '.q' + str(quarter)
         elif fundMode is 2:
@@ -219,6 +240,6 @@ class getFund():
         return
 
 if __name__ == "__main__":
-    a = getFund(detailStartYear='2016')
-    a.getAllFundHold(1,1)
-    a.getAllFundHold(1,2)
+    a = getFund(detailStartYear='2017')
+    a.getAllFundHold(3,1)
+    a.getAllFundHold(3,2)

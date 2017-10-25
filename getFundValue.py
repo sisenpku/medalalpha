@@ -19,8 +19,8 @@ class getFundValue:
         self.baseUrl = 'http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&per=500&sdate=&edate=&rt=0.01649088312777347&page=1&code='
         self.stockFile = stockFundFile
         self.mixFile = mixFundFile
-        self.succStock = './fundvalue/stock/'
-        self.succMix = './fundvalue/mix/'
+        self.succStock = './data/fundvalue/stock/'
+        self.succMix = './data/fundvalue/mix/'
         
 
     def getAllFundFromFile(self, fundMode):
@@ -43,7 +43,7 @@ class getFundValue:
         @summary : 根据基金代码获得基金每日净值
         """
         fundList = self.getAllFundFromFile(fundMode)
-        baseSavePath = './fundvalue/'
+        baseSavePath = './data/fundvalue/'
         if fundMode == 1:
             baseSavePath += 'stock/'
         else:
@@ -149,6 +149,4 @@ class getFundValue:
                 
 if __name__ == '__main__':
     b = getFundValue()
-    #b.updateFundValue()
-    a = b.getValue(1)
-    a = b.getValue(2)
+    b.updateFundValue()

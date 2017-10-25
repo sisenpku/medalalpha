@@ -374,4 +374,4 @@ class parseFundHold:
 if __name__ == "__main__":
     a = parseFundHold()
     #a.parseTopDiff(2016, "01-20", 30, 60)
-    b = a.parseAllDiff(2016, 2)
+    b = a.parseAllDiff(2016, 1)

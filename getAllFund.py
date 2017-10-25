@@ -41,8 +41,8 @@ class getAllFund:
                 tmpList = iter.split('",')
                 fundCode = tmpList[0]
                 fund.append(fundCode)
-                endValue = tmpList[4].strip('"')
-                startValue = tmpList[6].strip('"')
+                endValue = tmpList[3].strip('"')
+                startValue = tmpList[5].strip('"')
                 if len(endValue) < 3:
                     endValue = None
                 if len(startValue) < 3:
@@ -60,9 +60,9 @@ class getAllFund:
         mixFund = self.getFund(2)[0]
         stockFundStr = "\n".join(stockFund)
         mixFundStr = "\n".join(mixFund)
-        stockFundFile = open("./funddata/stockFundCode","w")
+        stockFundFile = open("./data/funddata/stockFundCode","w")
         stockFundFile.write(stockFundStr)
-        mixFundFile = open("./funddata/mixFundCode", "w")
+        mixFundFile = open("./data/funddata/mixFundCode", "w")
         mixFundFile.write(mixFundStr)
         return [stockFund, mixFund]
         
